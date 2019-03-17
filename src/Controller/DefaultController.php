@@ -32,7 +32,10 @@ class DefaultController extends Controller
             if (!$data = @exif_read_data($file->getRealPath())) {
                 continue;
             }
-            $time = new \DateTime($data['DateTimeOriginal']);
+            $time = new \DateTime(sprintf('@%d', $data['FileDateTime']));
+            if (isset($data['DateTimeOriginal'])) {
+                $time = new \DateTime($data['DateTimeOriginal']);
+            }
             $galleries[$time->format('Y-m')][$time->getTimestamp() . $x] = [
                 'name' => $file->getFilename(),
                 'time' => $time->getTimestamp(),
