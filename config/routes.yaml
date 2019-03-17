@@ -1,0 +1,7 @@
+index:
+    path: /
+    controller: App\Controller\DefaultController::index
+
+preview:
+    path: /media/cache/generate/preview/{width}x{height}/{name}
+    controller: App\Controller\DefaultController::preview

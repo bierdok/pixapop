@@ -1,0 +1,55 @@
+{% spaceless %}
+    <!doctype html>
+    <html lang="{{ locale }}">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no">
+        <meta name="mobile-web-app-capable" content="yes">
+        <title>Pixapop</title>
+        <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon.png') }}">
+        <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon-32x32.png') }}">
+        <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicon-16x16.png') }}">
+        <link rel="manifest" href="{{ asset('manifest.json') }}" crossorigin="use-credentials">
+        <link rel="mask-icon" href="{{ asset('safari-pinned-tab.svg') }}" color="#5bbad5">
+        <meta name="msapplication-TileColor" content="#ffc40d">
+        <meta name="theme-color" content="#ffffff">
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
+        {% endblock %}
+        <script>window.locale = '{{ locale }}'; window.pixapop = {{ pixapop|json_encode|raw }};</script>
+    </head>
+    <body>
+    <div id="app" v-cloak>
+        <fullscreen ref="fullscreen" @change="onToggleFullscreen">
+            <button class="btn fullscreen" @click="toggleFullscreen">
+                <vue-material-icon :name="getFullscreenIcon()"></vue-material-icon>
+            </button>
+            <div class="preview" v-if="preview.photo" v-touch:swipe="onPreviewSwipe">
+                <button v-show="preview.index > 0" class="btn previous" @click="openPreview(preview.index - 1)">
+                    <vue-material-icon name="chevron_left"></vue-material-icon>
+                </button>
+                <button v-show="preview.index < gallery.length - 1" class="btn next" @click="openPreview(preview.index + 1)">
+                    <vue-material-icon name="chevron_right"></vue-material-icon>
+                </button>
+                <button class="btn close" @click="closePreview">
+                    <vue-material-icon name="close"></vue-material-icon>
+                </button>
+                <a class="btn download" download :href="'photos/' + preview.photo.name" :title="getPhotoSize(preview.photo)">
+                    <vue-material-icon name="cloud_download"></vue-material-icon>
+                </a>
+                <progressive-img draggable="false" :src="getPreviewPath(preview.photo)" :placeholder="getThumbnailPath(preview.photo)">
+            </div>
+            <div class="gallery" v-show="!preview.photo">
+                <select @change="loadGallery">
+                    <option v-for="(gallery, month) in pixapop" :value="month" v-text="getGalleryLabel(month, Object.keys(gallery).length)"></option>
+                </select>
+                <img class="thumbnail" draggable="false" v-for="(photo, index) in gallery" :key="photo.name" @click="openPreview(index)" v-lazy="getThumbnailPath(photo)">
+            </div>
+        </fullscreen>
+    </div>
+    {% block javascripts %}
+        {{ encore_entry_script_tags('app') }}
+    {% endblock %}
+    </body>
+    </html>
+{% endspaceless %}

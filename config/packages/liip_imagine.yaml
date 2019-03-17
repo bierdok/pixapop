@@ -1,0 +1,21 @@
+liip_imagine:
+    driver: imagick
+    filter_sets:
+        thumbnail:
+            data_loader: photos
+            filters:
+                auto_rotate: ~
+                strip: ~
+                thumbnail:
+                    size: [256, 256]
+                    mode: outbound
+                    allow_upscale: true
+        preview:
+            data_loader: photos
+            filters:
+                auto_rotate: ~
+                strip: ~
+    loaders:
+        photos:
+            filesystem:
+                data_root: "/photos"
