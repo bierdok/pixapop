@@ -12,8 +12,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class DefaultController extends Controller
 {
-    const DIR = '/photos';
-
     /**
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
@@ -24,32 +22,32 @@ class DefaultController extends Controller
         $fileSystem = new Filesystem();
         $finder = new Finder();
 
-        if (!$fileSystem->exists(self::DIR)) {
+        if (!$fileSystem->exists(getenv('APP_PHOTO_DIR'))) {
             throw new BadRequestHttpException('Non-existent directory');
         }
 
-        $pixapop = [];
+        $galleries = [];
         /** @var File $file */
-        foreach ($finder->files()->in(self::DIR)->depth(0) as $x => $file) {
+        foreach ($finder->files()->in(getenv('APP_PHOTO_DIR'))->depth(0) as $x => $file) {
             if (!$data = @exif_read_data($file->getRealPath())) {
                 continue;
             }
             $time = new \DateTime($data['DateTimeOriginal']);
-            $pixapop[$time->format('Y-m')][$time->getTimestamp() . $x] = [
+            $galleries[$time->format('Y-m')][$time->getTimestamp() . $x] = [
                 'name' => $file->getFilename(),
                 'time' => $time->getTimestamp(),
                 'size' => $file->getSize()
             ];
         }
-        krsort($pixapop);
-        foreach ($pixapop as $month => &$gallery) {
+        krsort($galleries);
+        foreach ($galleries as $month => &$gallery) {
             krsort($gallery);
             $gallery = array_values($gallery);
         }
 
         return $this->render('index.html.twig', [
             'locale' => substr($request->getPreferredLanguage(), 0, 2),
-            'pixapop' => $pixapop
+            'pixapop' => $galleries
         ]);
     }
 
@@ -62,7 +60,7 @@ class DefaultController extends Controller
     public function preview(int $width, int $height, string $name)
     {
         $finder = new Finder();
-        $finder->files()->in(self::DIR)->depth(0)->name($name);
+        $finder->files()->in(getenv('APP_PHOTO_DIR'))->depth(0)->name($name);
 
         foreach ($finder as $file) {
             if (!$data = @exif_read_data($file->getRealPath())) {

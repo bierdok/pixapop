@@ -18,4 +18,4 @@ liip_imagine:
     loaders:
         photos:
             filesystem:
-                data_root: "/photos"
+                data_root: '%env(APP_PHOTO_DIR)%'
