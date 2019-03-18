@@ -4,7 +4,7 @@ Encore
     .setOutputPath('public/build/')
     .setPublicPath('/build')
     .addEntry('app', './assets/js/app.js')
-    .enableSassLoader()
+    .enableStylusLoader()
     .enablePostCssLoader()
     .enableVueLoader()
     .splitEntryChunks()

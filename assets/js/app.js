@@ -1,4 +1,4 @@
-import '../css/app.scss'
+import '../css/app.styl'
 
 import {sprintf} from 'sprintf-js'
 import FastClick from 'fastclick'

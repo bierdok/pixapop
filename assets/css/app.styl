@@ -1,0 +1,94 @@
+[v-cloak]
+  display: none
+*
+  user-select: none
+  cursor: default
+  &:focus
+    outline: none
+body
+  margin: 0
+  position: relative
+  height: 100%
+  background-color: #000
+  overflow: hidden
+.btn
+  position: fixed
+  border-radius: 50%
+  background: #fff
+  color: #495057
+  border: 0
+  margin: .5rem
+  padding: 10px
+  z-index: 20
+  &.next,
+  &.previous
+    visibility: hidden
+  @media (min-width: 576px)
+    &.next,
+    &.previous
+      visibility: visible
+      top: 50%
+      transform: translate(0, -50%)
+      right: 0
+    &.previous
+      left: 0
+  &.fullscreen
+    bottom: 0
+    left: 0
+  &.close
+    top: 0
+    right: 0
+  &.download
+    bottom: 0
+    right: 0
+.preview
+  position: fixed
+  top: 0
+  right: 0
+  bottom: 0
+  left: 0
+  z-index: 2
+  background-color: #000
+  .progressive-image
+    position: absolute
+    top: 50%
+    left: 50%
+    z-index: 3
+    transform: translate(-50%, -50%)
+.gallery
+  position: fixed
+  top: 0
+  bottom: 0
+  left: 0
+  right: 0
+  height: 100%
+  overflow: auto
+  background: #000
+  select
+    position: fixed
+    bottom: 8px
+    right: 24px
+    z-index: 1
+    display: block
+    height: calc(1.5em + .75rem + 2px)
+    padding: .375rem .75rem
+    font-size: 1rem
+    font-weight: 400
+    line-height: 1.5
+    color: #495057
+    background-color: #fff
+    background-clip: padding-box
+    border: 1px solid #ced4da
+    border-radius: .25rem
+    word-wrap: normal
+    text-transform: none
+  img
+    display: inline-block
+    vertical-align: top
+    width: 33.3333%
+    @media (min-width: 576px)
+      width: 25%
+    @media (min-width: 768px)
+      width: 20%
+    @media (min-width: 992px)
+      width: 10%
